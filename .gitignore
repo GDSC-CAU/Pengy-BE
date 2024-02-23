@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.py.class
+
+# Django Related
+db.sqlite3
+*.log
+*.pot
+media/
+static/
+staticfiles/
+
+# Virtual Environment
+venv/
+myenv/
+
+# IDE/Editors
+.idea/
+.vscode/
+*.sublime-workspace
+*.swp
+*.swo
+
+# Operating System Related
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Node modules (if used)
+node_modules/
+
+# Environment variables
+*.env
+
+# secrets 폴더 내부의 모든 파일
+secrets/*
+
+# 파이어베이스 json 파일
+firebase-adminsdk.json 
+
+# 구글 클라우드 스토리지 json 파일
+storage-service-account.json
+
+# 버킷 어드민 json 파일
+bucket-admin.json
+
+# 구글 배포용 파일
+app.yaml
