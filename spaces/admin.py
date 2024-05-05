@@ -1,35 +1,40 @@
 from django.contrib import admin
-from .models import MySpace, SpaceCategory, SpaceChecklist, MySpaceChecklistStatus
+from .models import MySpace, SpaceCategory, MySpaceDetail
+from django.db.models import Count
 
-# spaceCategory가 바로 보이게 하기
+# Inline admin for MySpaceDetail within MySpace admin
+class MySpaceDetailInline(admin.TabularInline):
+    model = MySpaceDetail
+    extra = 1
+    fields = ('nickname', 'thumbnail_image', 'count_user_fire_hazards')
+    readonly_fields = ('count_user_fire_hazards',)
+
+# Admin model for SpaceCategory
 class SpaceCategoryAdmin(admin.ModelAdmin):
     list_display = ('categoryName',)
     list_filter = ('categoryName',)
     search_fields = ('categoryName',)
     ordering = ('categoryName',)
 
-# mySpace가 바로 보이게 하기
+# Admin model for MySpace
 class MySpaceAdmin(admin.ModelAdmin):
-    list_display = ('spaceName', 'coordinates', 'category', 'FirebaseUID')
-    list_filter = ('spaceName', 'coordinates', 'category', 'FirebaseUID')
-    search_fields = ('spaceName', 'coordinates', 'category', 'FirebaseUID')
-    ordering = ('spaceName', 'coordinates', 'category', 'FirebaseUID')
+    list_display = ('spaceName', 'category', 'FirebaseUID_display', 'coordinates', 'address', 'related_hazards_count')
+    list_filter = ('spaceName', 'category__categoryName', 'FirebaseUID__username')
+    search_fields = ('spaceName', 'coordinates', 'category__categoryName', 'FirebaseUID__username')
+    ordering = ('spaceName', 'coordinates')
+    inlines = [MySpaceDetailInline]
 
-# spaceChecklist가 바로 보이게 하기
-class SpaceChecklistAdmin(admin.ModelAdmin):
-    list_display = ('category', 'checklistItem')
-    list_filter = ('category', 'checklistItem')
-    search_fields = ('category', 'checklistItem')
-    ordering = ('category', 'checklistItem')
+    # Custom display function for FirebaseUID to show the username
+    def FirebaseUID_display(self, obj):
+        return obj.FirebaseUID.username if obj.FirebaseUID else ''
+    FirebaseUID_display.short_description = "User"
 
-# mySpaceChecklistStatus가 바로 보이게 하기
-class MySpaceChecklistStatusAdmin(admin.ModelAdmin):
-    list_display = ('mySpace', 'checklistItem', 'isCompleted')
-    list_filter = ('mySpace', 'checklistItem', 'isCompleted')
-    search_fields = ('mySpace', 'checklistItem', 'isCompleted')
-    ordering = ('mySpace', 'checklistItem', 'isCompleted')
+    # Counting related hazards for each space
+    def related_hazards_count(self, obj):
+        return obj.myspacedetail_set.aggregate(Count('user_fire_hazards'))['user_fire_hazards__count']
+    related_hazards_count.short_description = 'Number of Hazards'
 
+# Register your models with their respective admin classes
+admin.site.register(MySpaceDetail)
 admin.site.register(SpaceCategory, SpaceCategoryAdmin)
 admin.site.register(MySpace, MySpaceAdmin)
-admin.site.register(SpaceChecklist, SpaceChecklistAdmin)
-admin.site.register(MySpaceChecklistStatus, MySpaceChecklistStatusAdmin)

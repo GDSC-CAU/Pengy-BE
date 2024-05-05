@@ -13,6 +13,7 @@ db.sqlite3
 media/
 static/
 staticfiles/
+migrations/
 
 # Virtual Environment
 venv/
@@ -51,3 +52,4 @@ bucket-admin.json
 
 # 구글 배포용 파일
 app.yaml
+

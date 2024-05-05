@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'users',
     'notifications',
     'quizzes', 
+    'gemVision',
 
     'rest_framework',
     'django_extensions',
@@ -197,8 +198,12 @@ if get_env_variable("ENVIRONMENT") == 'production':
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': get_env_variable("DB_NAME"),
+            'USER': get_env_variable("DB_USER"),
+            'PASSWORD': get_env_variable("DB_PASSWORD"),
+            'HOST': get_env_variable("DB_HOST"),
+            'PORT': get_env_variable("DB_PORT"),
         }
     }
 
@@ -251,7 +256,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://www.fire-61d9a.du.r.appspot.com',
     'https://pengy.dev',
     'https://www.pengy.dev',
-    'https://6bb7-219-255-207-60.ngrok-free.app',
+    'https://45fb-120-50-91-13.ngrok-free.app',
 ]
 
 CSRF_COOKIE_SECURE = False

@@ -27,6 +27,8 @@ urlpatterns = [
     path('api/spaces/', include('spaces.urls', namespace='spaces')),
     path('api/notifications/', include('notifications.urls', namespace='notifications')),
     path('api/quizzes/', include('quizzes.urls', namespace='quizzes')),
+    path('api/gem-vision/', include('gemVision.urls', namespace='gemVision')),
+    path('api/fire-hazards/', include('fireHazards.urls', namespace='fireHazards')),
 
     # drf-spectacular의 API 스키마 및 문서화를 위한 경로 추가
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

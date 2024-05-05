@@ -1,6 +1,5 @@
 # config/management/commands/update_edu_content_batch.py
 
-from django.conf import settings
 from django.core.management.base import BaseCommand
 from eduContents.utils import update_edu_content
 from fireHazards.models import FireHazard

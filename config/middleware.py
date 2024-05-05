@@ -91,8 +91,11 @@ class FirebaseAuthenticationMiddleware:
         if (request.path.startswith('/api/spaces/hazards') or
             request.path.startswith('/api/spaces/myspace/create') or
             request.path.startswith('/api/quizzes/update-score') or
-            request.path.startswith('/api/spaces/myspace/<int:myspace_id>/update-checklist/')):
-            print("post 요청입니다.")
+            request.path.startswith('/api/spaces/myspace/<int:myspace_id>/update-checklist') or
+            request.path.startswith('/api/gem-vision/generate-vision-result') or
+            request.path.startswith('/api/fire-hazards/update-check')
+            ):
+            print("POST 요청입니다.")
             return self.get_response(request)
         
         if request.user.is_superuser:

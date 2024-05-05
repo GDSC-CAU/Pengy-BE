@@ -12,7 +12,7 @@ from rest_framework import status
 
 class GetUserScoreView(APIView):
     """Get the user's fish score."""
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         user_score, created = UserScore.objects.get_or_create(user=request.user)

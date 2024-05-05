@@ -1,28 +1,29 @@
-# fireHazards 앱의 admin.py
 from django.contrib import admin
-from .models import FireHazard, UserFireHazard, HazardCategory
+from .models import FireHazard, UserFireHazard
 
-admin.site.register(HazardCategory)
-admin.site.register(FireHazard)
-admin.site.register(UserFireHazard)
-
-#hazrdCategory가 바로 보이게 하기
-class HazardCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    list_filter = ('name',)
-    search_fields = ('name',)
-    ordering = ('name',)
-
-#fireHazard가 바로 보이게 하기
 class FireHazardAdmin(admin.ModelAdmin):
-    list_display = ('hazard_category', 'object')
-    list_filter = ('hazard_category', 'object')
-    search_fields = ('hazard_category', 'object')
-    ordering = ('hazard_category', 'object')
+    list_display = ('object',)
+    list_filter = ('object',)
+    search_fields = ('object',)
+    ordering = ('object',)
 
-#userFireHazard가 바로 보이게 하기
 class UserFireHazardAdmin(admin.ModelAdmin):
-    list_display = ('my_space', 'fire_hazard', 'thumbnail_image', 'nickname', 'capture_time')
-    list_filter = ('my_space', 'fire_hazard', 'thumbnail_image', 'nickname', 'capture_time')
-    search_fields = ('my_space', 'fire_hazard', 'thumbnail_image', 'nickname', 'capture_time')
-    ordering = ('my_space', 'fire_hazard', 'thumbnail_image', 'nickname', 'capture_time')
+    list_display = ('my_space_detail_display', 'fire_hazard', 'thumbnail_image_display', 'nickname_display')
+    list_filter = ('my_space_detail__my_space', 'fire_hazard__object')
+    search_fields = ('my_space_detail__nickname', 'fire_hazard__object')
+    ordering = ('my_space_detail', 'fire_hazard')
+
+    def my_space_detail_display(self, obj):
+        return obj.my_space_detail.my_space.spaceName
+    my_space_detail_display.short_description = 'My Space'
+
+    def thumbnail_image_display(self, obj):
+        return obj.my_space_detail.thumbnail_image.url if obj.my_space_detail.thumbnail_image else "No image"
+    thumbnail_image_display.short_description = 'Thumbnail Image'
+
+    def nickname_display(self, obj):
+        return obj.my_space_detail.nickname
+    nickname_display.short_description = 'Nickname'
+
+admin.site.register(FireHazard, FireHazardAdmin)
+admin.site.register(UserFireHazard, UserFireHazardAdmin)
